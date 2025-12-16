@@ -1,0 +1,40 @@
+services: 
+  server: 
+    build: .
+    container_name: node-project
+    env_file: 
+      - .env
+    ports: 
+      - "${PORT}:${PORT}"
+    depends_on:
+      - postgres
+      - redis
+
+    volumes:
+      - .:/app
+    command: ["npm", "run", "start"]
+    restart: unless-stopped
+
+  postgres: 
+    image: postgres:18-alpine  
+    container_name: postgres_node_db
+    environment: 
+       POSTGRES_USER: "${DB_USER}"
+       POSTGRES_PASSWORD: "${DB_PASSWORD}"
+       POSTGRES_DB: "${DB_NAME}"
+    ports:
+      - "5431:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped
+    
+  redis:
+    image: redis:7-alpine
+    container_name: redis_cache
+    volumes:
+      - redis_data:/data
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+  redis_data:
