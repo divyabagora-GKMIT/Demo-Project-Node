@@ -1,4 +1,5 @@
 const { getCachedUsers, setCachedUsers, delCachedUsers } = require("../helpers/cache.helper");
+const logger = require("../logger");
 const { User, UserAddress } = require("../models");
 const { getAllUsers, getUserById } = require("../serializers/user.serializer");
 const { customError } = require("../utils/errorResponse");
@@ -23,16 +24,16 @@ const createUser = async (payload) => {
 };
 
 const viewAllUsers = async (query) => {
-  const { page, limit, sort, order } = query;
+  const { page , limit, sort, order } = query;
   let key = keyGeneration(page, limit, sort, order);
   const offset = (page - 1) * limit;
 
-  // const cachedUsers = await getCachedUsers(key);
-  // if (cachedUsers) return cachedUsers;
-
+  if (!sort){
+    logger.warn("Pagination fields are empty");
+  }
   let orderBy = order == -1 ? "DESC" : "ASC"
   const { count, rows: users } = await User.findAndCountAll({
-    limit,
+    limit ,
     offset,
     order: [[sort, orderBy]],
     attributes: {
