@@ -17,6 +17,7 @@
     "seed:all": "npx sequelize-cli db:seed:all"
   },
   "dependencies": {
+    "cls-rtracer": "^2.6.3",
     "dotenv": "^17.2.3",
     "express": "^5.2.1",
     "joi": "^18.0.2",
@@ -25,7 +26,8 @@
     "pg-hstore": "^2.3.4",
     "redis": "^5.10.0",
     "sequelize": "^6.37.7",
-    "sequelize-cli": "^6.6.3"
+    "sequelize-cli": "^6.6.3",
+    "winston": "^3.19.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",

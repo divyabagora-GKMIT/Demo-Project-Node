@@ -1,4 +1,5 @@
 const express = require("express");
+const rTracer = require('cls-rtracer');
 const dotenv = require("dotenv");
 const { sequelize } = require("./models");
 const { connectRedis, client } = require("./config/redis");
@@ -8,6 +9,7 @@ dotenv.config();
 const app = express();
 app.use(express.json());
 
+app.use(rTracer.expressMiddleware());
 app.get("/api/health", async (_req, res) => {
   try {
     const timestamp = await sequelize.query("SELECT now() as current_time");

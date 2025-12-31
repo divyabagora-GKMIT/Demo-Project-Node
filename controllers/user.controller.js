@@ -10,6 +10,8 @@ const {
   delCachedUsers,
 } = require("../helpers/cache.helper.js");
 const keyGeneration = require("../utils/keyGenerate.js");
+const logger = require("../logger/index.js");
+const { log } = require("winston");
 
 const createUser = async (req, res, next) => {
   try {
@@ -19,9 +21,11 @@ const createUser = async (req, res, next) => {
     console.log(error);
     const statusCode = error.statusCode || 500;
     const message = error.message || "Internal Server Error";
+    logger.error(error.message)
     return errorResponse(res, statusCode, message, error.name || "Error");
   }
 };
+
 const viewAllUsers = async (req, res, next) => {
   try {
     const result = await userService.viewAllUsers(req.query);
@@ -29,9 +33,11 @@ const viewAllUsers = async (req, res, next) => {
   } catch (error) {
     const statusCode = error.statusCode || 500;
     const message = error.message || "Internal Server Error";
+    logger.error(error.message);
     return errorResponse(res, statusCode, message, error.name || "Error");
   }
 };
+
 const viewUser = async (req, res, next) => {
   try {
     const id = req.params.id;
